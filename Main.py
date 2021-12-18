@@ -7,7 +7,6 @@ import requests
 
 # API settings
 API_KEY = 'dbc83d83a2892871b4afdaa3cf4b50af'
-exclude = 'minutely,hourly,daily,alerts'
 unites = 'metric'
 lang = 'sk'
 
