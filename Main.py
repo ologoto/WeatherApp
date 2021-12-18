@@ -2,7 +2,6 @@ import time
 from pprint import pprint
 from time import gmtime, strftime
 from plyer import notification
-from geopy.geocoders import Nominatim
 import requests
 
 # API settings
