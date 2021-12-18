@@ -4,6 +4,7 @@ from time import gmtime, strftime
 from plyer import notification
 import requests
 
+
 # API settings
 API_KEY = 'dbc83d83a2892871b4afdaa3cf4b50af'
 exclude = 'minutely,hourly,daily,alerts'
@@ -18,7 +19,7 @@ def city():
     city = input(str())
     if city == str('sered') or city == str('vahovce') or city == str('surovce'):
         city = str('galanta')
-    elif city == str('prasnik') :
+    elif city == str('prasnik'):
         city = ('vrbove')
     else:
         city = city
@@ -27,7 +28,6 @@ def city():
 
 # link creation
 baseurl = 'http://api.openweathermap.org/data/2.5/weather?q=' + city() + '&units=' + unites + '&mode=' + '&appid=' + API_KEY
-# baseurl1 = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city() + '&units=' + unites + '&appid=' + API_KEY
 
 print(baseurl)
 
@@ -47,15 +47,6 @@ while baseurl:
     try:
         weather_data = requests.get(baseurl).json()
         pprint(weather_data)
-        notification.notify(
-            title='weather report  ' + strftime("%d-%m %H:%M:%S", gmtime()),
-            message= weather_data,
-            app_name='WeatherApp',
-        )
         time.sleep(mintosec())
     except RuntimeError or ValueError:
         break
-
-
-
-
