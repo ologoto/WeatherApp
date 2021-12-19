@@ -1,36 +1,15 @@
+from bs4 import BeautifulSoup
+import requests
 import time
-from pprint import pprint
 from time import gmtime, strftime
 from plyer import notification
-import requests
 
-
-# API settings
-API_KEY = 'dbc83d83a2892871b4afdaa3cf4b50af'
-unites = 'metric'
-lang = 'sk'
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
 
 print('zadaj mesto')
+city = input(str())
 
-
-# city function
-def city():
-    city = input(str())
-    if city == str('sered') or city == str('vahovce') or city == str('surovce'):
-        city = str('galanta')
-    elif city == str('prasnik'):
-        city = ('vrbove')
-    else:
-        city = city
-    return str(city)
-
-
-# link creation
-baseurl = 'http://api.openweathermap.org/data/2.5/weather?q=' + city() + '&units=' + unites + '&mode=' + '&appid=' + API_KEY
-
-print(baseurl)
-
-# user selected report frequency
 print('set report frequency (minutes)')
 x = int(input())
 
@@ -40,12 +19,35 @@ def mintosec():
     return i
 
 
-# weather report loop
-while baseurl:
-    print(strftime("%d-%m %H:%M:%S", gmtime()))
+def weather(city):
     try:
-        weather_data = requests.get(baseurl).json()
-        pprint(weather_data)
+        city = city.replace(" ", "+")
+        res = requests.get(
+            f'https://www.google.com/search?q={city}&oq={city}&aqs=chrome.0.35i39l2j0l4j46j69i60.6128j1j7&sourceid=chrome&ie=UTF-8',
+            headers=headers)
+    except ValueError or RuntimeError:
+        print('check your internet connection')
+
+    while headers:
+        print(strftime("%d-%m %H:%M:%S", gmtime()))
+        soup = BeautifulSoup(res.text, 'html.parser')
+
+        location = soup.select('#wob_loc')[0].getText().strip()
+        current_time = soup.select('#wob_dts')[0].getText().strip()
+        info = soup.select('#wob_dc')[0].getText().strip()
+        weather = soup.select('#wob_tm')[0].getText().strip()
+
+        information = f"{location}\n{current_time}\n{info}\n{weather} °C "
+        print(information)
+        notification.notify(
+            app_name= 'WeatherApp',
+            title = 'Počasie' + strftime("%d-%m %H:%M:%S", gmtime()),
+            message = information,
+            timeout = int(10)
+        )
         time.sleep(mintosec())
-    except RuntimeError or ValueError:
-        break
+
+
+
+city = city + " weather"
+weather(city)
