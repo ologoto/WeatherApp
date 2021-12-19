@@ -10,7 +10,7 @@ headers = {
 print('zadaj mesto')
 city = input(str())
 
-print('set report frequency (minutes)')
+print('zadaj frekvenciu hlásenia (minúty)')
 x = int(input())
 
 
@@ -20,6 +20,7 @@ def mintosec():
 
 
 def weather(city):
+    global res
     try:
         city = city.replace(" ", "+")
         res = requests.get(
@@ -43,8 +44,9 @@ def weather(city):
             app_name= 'WeatherApp',
             title = 'Počasie' + strftime("%d-%m %H:%M:%S", gmtime()),
             message = information,
-            timeout = int(10)
+            timeout = int(5)
         )
+
         time.sleep(mintosec())
 
 
