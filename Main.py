@@ -41,14 +41,13 @@ def weather(city):
         information = f"{location}\n{current_time}\n{info}\n{weather} °C "
         print(information)
         notification.notify(
-            app_name= 'WeatherApp',
-            title = 'Počasie' + strftime("%d-%m %H:%M:%S", gmtime()),
-            message = information,
-            timeout = int(5)
+            app_name='WeatherApp',
+            title='Počasie' + strftime("%d-%m %H:%M:%S", gmtime()),
+            message=information,
+            timeout=int(5)
         )
 
         time.sleep(mintosec())
-
 
 
 city = city + " weather"
